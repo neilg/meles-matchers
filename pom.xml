@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -33,6 +34,7 @@
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
 
         <jgitflow-maven-plugin.version>1.0-m5.1</jgitflow-maven-plugin.version>
+        <pitest.version>1.1.7</pitest.version>
     </properties>
 
     <build>
@@ -91,6 +93,23 @@
                     <artifactId>jgitflow-maven-plugin</artifactId>
                     <version>${jgitflow-maven-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${pitest.version}</version>
+                    <configuration>
+                        <mutators>
+                            <mutator>ALL</mutator>
+                        </mutators>
+                        <targetClasses>
+                            <param>io.meles.matchers.*</param>
+                        </targetClasses>
+                        <targetTests>
+                            <param>io.meles.matchers.*</param>
+                        </targetTests>
+                        <timestampedReports>false</timestampedReports>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -148,7 +167,7 @@
                                 <configuration>
                                     <rules>
                                         <!--<requirePluginVersions />-->
-                                        <dependencyConvergence />
+                                        <dependencyConvergence/>
                                         <bannedDependencies>
                                             <excludes>
                                                 <exclude>junit:junit-dep</exclude>
@@ -157,6 +176,24 @@
                                         </bannedDependencies>
                                     </rules>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>mutation</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
