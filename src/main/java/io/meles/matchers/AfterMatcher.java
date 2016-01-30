@@ -9,16 +9,16 @@ public final class AfterMatcher extends TypeSafeDiagnosingMatcher<ReadableInstan
 
     private final ReadableInstant rhs;
 
-    @Factory
-    public static AfterMatcher after(final ReadableInstant rhs) {
-        return new AfterMatcher(rhs);
-    }
-
     public AfterMatcher(final ReadableInstant rhs) {
         if (rhs == null) {
             throw new NullPointerException("null rhs");
         }
         this.rhs = rhs;
+    }
+
+    @Factory
+    public static AfterMatcher after(final ReadableInstant rhs) {
+        return new AfterMatcher(rhs);
     }
 
     @Override
