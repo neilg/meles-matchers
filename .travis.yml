@@ -1,4 +1,7 @@
 language: java
 
+install: echo
+script: mvn -Pmutation verify
+
 jdk:
 - openjdk7
